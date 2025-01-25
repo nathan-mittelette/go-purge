@@ -1,0 +1,54 @@
+linters:
+  enable:
+    - gofmt
+    - govet
+    - errcheck
+    - staticcheck
+    - gosimple
+    - ineffassign
+    - typecheck
+    - unconvert
+    - unused
+    - misspell
+    - gocyclo
+    - gosec
+    - revive
+    - bodyclose
+    - goconst
+    - goimports
+    - prealloc
+
+run:
+  timeout: 5m
+  tests: true
+
+linters-settings:
+  gocyclo:
+    min-complexity: 25
+  goconst:
+    min-len: 3
+    min-occurrences: 3
+  misspell:
+    locale: US
+  revive:
+    rules:
+      - name: exported
+        severity: warning
+        disabled: false
+  gosec:
+    excludes:
+      - G404  # Insecure random number source (rand)
+
+issues:
+  exclude-files:
+    - ".*_test\\.go$"
+  exclude-dirs:
+    - vendor/
+    - test/
+  exclude-rules:
+    - path: _test\.go
+      linters:
+        - gosec
+        - errcheck
+  max-issues-per-linter: 0
+  max-same-issues: 0
