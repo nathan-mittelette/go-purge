@@ -13,7 +13,6 @@
 
 `go-purge` is a CLI (Command Line Interface) designed to help developers clean their systems or projects by removing caches, unnecessary files, and specific directories that accumulate over time.
 
-
 ---
 
 ## Table of Contents
@@ -130,6 +129,24 @@ The `global` command cleans up various caches and resources from tools and techn
 - **Gradle**:
     - Deletes the cache directory located at `~/.gradle/caches`.
 
+- **Composer**:
+    - Deletes the Composer cache directory located at `~/.composer/cache`.
+
+- **Dart**:
+    - Deletes the Dart cache directory located at `~/.dart_tool`.
+
+- **Pip**:
+    - Deletes the Python cache directory.
+
+- **Cargo**:
+    - Deletes the Cargo cache directory located at `~/.cargo`.
+
+- **Dotnet**:
+    - Deletes the Dotnet cache directory.
+
+- **SDKMAN**:
+    - Deletes the SDKMAN cache directory.
+
 - **Go**:
     - Cleans the Go cache using the command `go clean -cache -modcache -testcache`.
 
@@ -150,6 +167,7 @@ You can execute this command with or without confirmation:
 The `directory` command focuses on cleaning specific directories in the current folder and its subfolders. The following directories are targeted for removal:
 
 - `.terraform`
+- `.dart_tool`
 - `node_modules`
 - `target` (used in Java or Maven projects)
 
@@ -157,8 +175,9 @@ This command scans your working folder for these directories and prompts you bef
 
 Commands executed in the background:
 ```bash
-find . -type d -name "node_modules" -exec rm -rf {} +
 find . -type d -name ".terraform" -exec rm -rf {} +
+find . -type d -name ".dart_tool" -exec rm -rf {} +
+find . -type d -name "node_modules" -exec rm -rf {} +
 find . -type d -name "target" -exec rm -rf {} +
 ```
 

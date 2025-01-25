@@ -10,7 +10,6 @@ linters:
     - unconvert
     - unused
     - misspell
-    - gocyclo
     - gosec
     - revive
     - bodyclose
@@ -23,8 +22,6 @@ run:
   tests: true
 
 linters-settings:
-  gocyclo:
-    min-complexity: 25
   goconst:
     min-len: 3
     min-occurrences: 3

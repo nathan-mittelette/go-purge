@@ -50,7 +50,7 @@ func main() {
 	}
 
 	if err := app.Run(os.Args); err != nil {
-		color.Red("Error:", err)
+		color.Red(fmt.Sprintf("Error: %v", err))
 	}
 }
 
@@ -163,6 +163,22 @@ func cleanGlobal(c *cli.Context) error {
 		color.Yellow("docker not found")
 	}
 
+	// Dotnet check
+	if commandExists("dotnet") {
+		color.Cyan("Cleaning Dotnet cache...")
+
+		err = confirmCommand(force, "dotnet", "nuget", "locals", "all", "--clear")
+
+		if err != nil {
+			color.Red("Error cleaning Dotnet cache")
+			return err
+		}
+
+		color.Green("Dotnet cache cleaned!")
+	} else {
+		color.Yellow("dotnet not found")
+	}
+
 	// Maven check
 	homeDir, _ := os.UserHomeDir()
 	m2Path := filepath.Join(homeDir, ".m2", "repository")
@@ -181,6 +197,25 @@ func cleanGlobal(c *cli.Context) error {
 		}
 	} else {
 		color.Yellow("Maven repository not found")
+	}
+
+	// Cargo check
+	cargoPath := filepath.Join(homeDir, ".cargo", "registry")
+	if _, err := os.Stat(cargoPath); err == nil {
+		color.Cyan("Cleaning Cargo registry...")
+
+		if confirmAction("Do you want to delete the Cargo registry?", force) {
+			err = removeAll(cargoPath)
+
+			if err != nil {
+				color.Red("Error cleaning Cargo registry")
+				return err
+			}
+
+			color.Green("Cargo registry cleaned!")
+		}
+	} else {
+		color.Yellow("Cargo registry not found")
 	}
 
 	// Gradle check
@@ -202,6 +237,22 @@ func cleanGlobal(c *cli.Context) error {
 		color.Yellow("Gradle cache not found")
 	}
 
+	// Pip check
+	if commandExists("pip") {
+		color.Cyan("Cleaning Pip cache...")
+
+		err = confirmCommand(force, "pip", "cache", "purge")
+
+		if err != nil {
+			color.Red("Error cleaning Pip cache")
+			return err
+		}
+
+		color.Green("Pip cache cleaned!")
+	} else {
+		color.Yellow("pip not found")
+	}
+
 	// Go check
 	if commandExists("go") {
 		color.Cyan("Cleaning Go cache...")
@@ -221,7 +272,7 @@ func cleanGlobal(c *cli.Context) error {
 	if commandExists("brew") {
 		color.Cyan("Cleaning Brew...")
 
-		err = confirmCommand(force, "brew", "cleanup")
+		err = confirmCommand(force, "brew", "cleanup", "--prune=all", "--scrub")
 
 		if err != nil {
 			color.Red("Error cleaning Brew")
@@ -231,6 +282,52 @@ func cleanGlobal(c *cli.Context) error {
 		color.Green("Brew cleaned!")
 	} else {
 		color.Yellow("brew not found")
+	}
+
+	// SDKMAN check
+	if commandExists("sdk") {
+		color.Cyan("Cleaning SDKMAN...")
+
+		err = confirmCommand(force, "sdk", "flush")
+
+		if err != nil {
+			color.Red("Error cleaning SDKMAN")
+			return err
+		}
+
+		color.Green("SDKMAN cleaned!")
+	} else {
+		color.Yellow("sdkman not found")
+	}
+
+	// Composer check
+	if commandExists("composer") {
+		color.Cyan("Cleaning Composer cache...")
+
+		err = confirmCommand(force, "composer", "clear-cache")
+
+		if err != nil {
+			color.Red("Error cleaning Composer cache")
+			return err
+		}
+	} else {
+		color.Yellow("composer not found")
+	}
+
+	// Dart check
+	if commandExists("dart") {
+		color.Cyan("Cleaning Dart cache...")
+
+		err = confirmCommand(force, "dart", "pub", "cache", "clean", "--force")
+
+		if err != nil {
+			color.Red("Error cleaning Dart cache")
+			return err
+		}
+
+		color.Green("Dart cache cleaned!")
+	} else {
+		color.Yellow("Dart not found")
 	}
 
 	// NPM check
@@ -287,7 +384,7 @@ func cleanGlobal(c *cli.Context) error {
 
 func cleanDirectory(c *cli.Context) error {
 	force := c.Bool("force")
-	dirsToClean := []string{".terraform", "node_modules", "target"}
+	dirsToClean := []string{".terraform", "node_modules", "target", ".dart_tool"}
 	var err error
 
 	for _, dir := range dirsToClean {
