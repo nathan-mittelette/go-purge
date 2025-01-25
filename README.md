@@ -1,6 +1,18 @@
 # go-purge
 
+![GO_PURGE_LOGO](assets/logo.png)
+
+![GitHub](https://img.shields.io/github/license/nathan-mittelette/go-purge)
+![Build Status](https://img.shields.io/github/actions/workflow/status/nathan-mittelette/go-purge/ci.yml)
+![GitHub contributors](https://img.shields.io/github/contributors/nathan-mittelette/go-purge)
+![GitHub repo size](https://img.shields.io/github/repo-size/nathan-mittelette/go-purge)
+![GitHub issues](https://img.shields.io/github/issues/nathan-mittelette/go-purge)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/nathan-mittelette/go-purge)
+![Buy Me a Coffee](https://img.shields.io/badge/Buy%20me%20a%20coffee-donate-%23FFDD00)
+
+
 `go-purge` is a CLI (Command Line Interface) designed to help developers clean their systems or projects by removing caches, unnecessary files, and specific directories that accumulate over time.
+
 
 ---
 

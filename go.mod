@@ -1,4 +1,4 @@
-module go-purge
+module github.com/nathan-mittelette/go-purge
 
 go 1.23
 
